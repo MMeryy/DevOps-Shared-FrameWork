@@ -35,8 +35,26 @@ jobs:
       - name: Build with Gradle
         run: gradle clean build
 
-      - name: Upload JAR artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: java-application
-          path: build/libs/*.jar
+      - name: Set up JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v4
+
+      - name: Configure JFrog
+        run: |
+          jf config add jfrog-server \
+            --url="${{ vars.JF_URL }}" \
+            --access-token="${{ secrets.JF_ACCESS_TOKEN }}" \
+            --interactive=false
+
+      - name: Upload JAR to JFrog
+        run: |
+          jf rt upload \
+            "build/libs/*.jar" \
+            "java-app-local/java-gradle-demo/${{ github.run_number }}/"
+ 
+
+
+     # - name: Upload JAR artifact
+     #   uses: actions/upload-artifact@v4
+     #   with:
+      #    name: java-application
+      #    path: build/libs/*.jar
