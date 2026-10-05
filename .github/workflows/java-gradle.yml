@@ -31,7 +31,7 @@ jobs:
         run: java -version
 
       - name: Check Gradle version
-        run: gradle --version
+        run: ./gradlew --version
 
       - name: Build with Gradle
         #run: gradle clean build
