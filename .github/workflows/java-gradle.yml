@@ -80,7 +80,11 @@ jobs:
           jf rt download \
             "java-app-local/java-gradle-demo/${{ github.run_number }}/*.jar" \
             .
-
+      - name: Check downloaded files
+        run: |
+           pwd
+           ls -lah
+           find -maxdepth 2 -type f -name "*.jar" -print
       - name: Deploy to Dev
         run: |
           cp *.jar /opt/devops-demo/dev/
