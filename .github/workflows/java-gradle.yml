@@ -12,7 +12,6 @@ jobs:
 
   build:
     name: Build Java application
-    #runs-on: ubuntu-latest
     runs-on: self-hosted
 
     steps:
@@ -34,7 +33,6 @@ jobs:
         run: ./gradlew --version
 
       - name: Build with Gradle
-        #run: gradle clean build
         run: ./gradlew clean build
 
       - name: Set up JFrog CLI
@@ -54,20 +52,36 @@ jobs:
           jf rt upload \
             "build/libs/*.jar" \
             "java-app-local/java-gradle-demo/${{ github.run_number }}/"
- 
 
 
-     # - name: Upload JAR artifact
-     #   uses: actions/upload-artifact@v4
-     #   with:
-      #    name: java-application
-      #    path: build/libs/*.jar
+  dev-deploy:
+    name: Deploy to Development
+    needs: build
+    environment:
+      name: dev
+    runs-on: self-hosted
 
-      #Below step is deploying .jar file directly from 
-      # github runner group to ec2 instance
+    steps:
 
-      
-      - name: Deploy to EC2
+      - name: Set up JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v4
+
+      - name: Configure JFrog
         run: |
-          cp build/libs/*.jar /opt/devops-demo/
-          ls -lh /opt/devops-demo/
+          jf config remove jfrog-server --quiet || true
+
+          jf config add jfrog-server \
+            --url="${{ vars.JF_URL }}" \
+            --access-token="${{ secrets.JF_ACCESS_TOKEN }}" \
+            --interactive=false
+
+      - name: Download JAR from JFrog
+        run: |
+          jf rt download \
+            "java-app-local/java-gradle-demo/${{ github.run_number }}/*.jar" \
+            .
+
+      - name: Deploy to Dev
+        run: |
+          cp *.jar /opt/devops-demo/dev/
+          ls -lh /opt/devops-demo/dev/
