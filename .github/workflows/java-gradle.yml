@@ -42,11 +42,12 @@ jobs:
 
       - name: Configure JFrog
         run: |
+          jf config remove jfrog-server --quiet || true
+
           jf config add jfrog-server \
             --url="${{ vars.JF_URL }}" \
             --access-token="${{ secrets.JF_ACCESS_TOKEN }}" \
             --interactive=false
-            --overwrite
 
       - name: Upload JAR to JFrog
         run: |
