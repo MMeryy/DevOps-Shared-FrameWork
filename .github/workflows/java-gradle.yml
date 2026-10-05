@@ -46,6 +46,7 @@ jobs:
             --url="${{ vars.JF_URL }}" \
             --access-token="${{ secrets.JF_ACCESS_TOKEN }}" \
             --interactive=false
+            --overwrite
 
       - name: Upload JAR to JFrog
         run: |
