@@ -107,14 +107,25 @@ jobs:
         run: |
           cp ./*.jar /opt/devops-demo/qa/
   staging-deploy:
-    name: Deploy to stage
+    name: Deploy to staging
     needs: build
     environment:
-      name: stage
+      name: staging
     runs-on: self-hosted
 
     steps:    
       - name: Deploy to Staging
         run: |
           cp ./*.jar /opt/devops-demo/staging/
+  Production-deploy:
+    name: Deploy to production
+    needs: build
+    environment:
+      name: prod
+    runs-on: self-hosted
+
+    steps:    
+      - name: Deploy to production
+        run: |
+          cp ./*.jar /opt/devops-demo/prod/        
         
