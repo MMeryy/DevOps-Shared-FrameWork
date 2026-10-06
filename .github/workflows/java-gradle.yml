@@ -95,3 +95,6 @@ jobs:
         run: |
           cp ./*.jar /opt/devops-demo/dev/
           ls -lh /opt/devops-demo/dev/
+      - name: Deploy to QA
+        run: |
+          cp ./*.jar /opt/devops-demo/qa/
