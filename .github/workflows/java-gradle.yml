@@ -75,23 +75,23 @@ jobs:
             --access-token="${{ secrets.JF_ACCESS_TOKEN }}" \
             --interactive=false
 
+     
       - name: Download JAR from JFrog
         run: |
           jf rt download \
             "java-app-local/java-gradle-demo/${{ github.run_number }}/*.jar" \
-            .
+            . \
+            --flat=true
+
       - name: Check downloaded files
         run: |
-            echo "Current directory:"
-            pwd
-  
-            echo "Files in workspace:"
-            ls -lah
-  
-            echo "JAR files:"
-            find . -maxdepth 2 -type f -name "*.jar" -print
+          echo "Current directory:"
+          pwd
+
+          echo "Downloaded JAR:"
+          find . -maxdepth 1 -type f -name "*.jar" -print
 
       - name: Deploy to Dev
         run: |
-          cp *.jar /opt/devops-demo/dev/
+          cp ./*.jar /opt/devops-demo/dev/
           ls -lh /opt/devops-demo/dev/
