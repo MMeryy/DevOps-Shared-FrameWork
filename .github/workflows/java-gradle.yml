@@ -82,9 +82,15 @@ jobs:
             .
       - name: Check downloaded files
         run: |
-           pwd
-           ls -lah
-           find -maxdepth 2 -type f -name "*.jar" -print
+            echo "Current directory:"
+            pwd
+  
+            echo "Files in workspace:"
+            ls -lah
+  
+            echo "JAR files:"
+            find . -maxdepth 2 -type f -name "*.jar" -print
+
       - name: Deploy to Dev
         run: |
           cp *.jar /opt/devops-demo/dev/
