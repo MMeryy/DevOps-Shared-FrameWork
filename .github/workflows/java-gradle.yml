@@ -95,6 +95,14 @@ jobs:
         run: |
           cp ./*.jar /opt/devops-demo/dev/
           ls -lh /opt/devops-demo/dev/
+  qa-deploy:
+    name: Deploy to qa
+    needs: build
+    environment:
+      name: qa
+    runs-on: self-hosted
+
+    steps:    
       - name: Deploy to QA
         run: |
           cp ./*.jar /opt/devops-demo/qa/
